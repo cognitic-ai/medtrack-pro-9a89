@@ -1,7 +1,14 @@
 import { Stack } from "expo-router";
 import * as AC from "@bacons/apple-colors";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { isLiquidGlassAvailable } from "expo-glass-effect";
+
+let isLiquidGlassAvailable: () => boolean = () => false;
+if (process.env.EXPO_OS === "ios") {
+  try {
+    const glassEffect = require("expo-glass-effect");
+    isLiquidGlassAvailable = glassEffect.isLiquidGlassAvailable;
+  } catch {}
+}
 
 const AppleStackPreset: NativeStackNavigationOptions =
   process.env.EXPO_OS !== "ios"
@@ -51,3 +58,4 @@ export default function Layout() {
     </Stack>
   );
 }
+
